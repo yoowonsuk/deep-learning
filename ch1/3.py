@@ -1,8 +1,21 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
-x = np.arange(0, 6, 0.1)
-y = np.sin(x)
+X = np.array([[51, 55], [14, 19], [0, 4]])
 
-plt.plot(x, y)
-plt.show()
+print(X)
+
+print(X[0])
+
+print(X[0][1])
+
+for row in X:
+    print(row)
+
+X = X.flatten()
+print(X)
+
+print(X[np.array([0, 2, 4])])
+
+print(X > 15)
+
+print(X[X>15])
