@@ -1,36 +1,55 @@
 import numpy as np
+import sys, os
+sys.path.append(os.pardir)
+from dataset.mnist import load_mnist
+import pickle, sigmoid, softmax
+#from sigmoid import sigmoid
+#from softmax import softmax
 
-def identity_function(x):
-    return x
-
+'''
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+def softmax(a):
+    c = np.max(a)
+    exp_a = np.exp(a-c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+'''
+
+def get_data():
+    (x_train, t_train), (x_test, t_test) = \
+            load_mnist(normalize=True, flatten=True, one_hot_label=False)
+    return x_test, t_test
+
 def init_network():
-    network = {}
-    network['W1'] = np.array([[.1, .3, .5], [.2, .4, .6]])
-    network['b1'] = np.array([.1, .2, .3])
-    network['W2'] = np.array([[.1, .4], [.2, .5], [.3, .6]])
-    network['b2'] = np.array([.1, .2])
-    network['W3'] = np.array([[.1, .3], [.2, .4]])
-    network['b3'] = np.array([.1, .2])
+    with open("sample_weight.pkl", 'rb') as f:
+        network = pickle.load(f)
 
     return network
 
-def forward(network, x):
+def predict(network, x):
     W1, W2, W3 = network['W1'], network['W2'], network['W3']
     b1, b2, b3 = network['b1'], network['b2'], network['b3']
 
     a1 = np.dot(x, W1) + b1
-    z1 = sigmoid(a1)
+    z1 = sigmoid.sigmoid(a1)
     a2 = np.dot(z1, W2) + b2
-    z2 = sigmoid(a2)
+    z2 = sigmoid.sigmoid(a2)
     a3 = np.dot(z2, W3) + b3
-    y = identity_function(a3)
+    y = softmax.softmax(a3)
 
     return y
 
+x, t = get_data()
 network = init_network()
-x = np.array([1., .5])
-y = forward(network, x)
-print(y)
+
+accuracy_cnt = 0
+for i in range(len(x)):
+    y = predict(network, x[i])
+    p = np.argmax(y) # 확률이 가장 높은 원소의 인덱스를 얻는다.
+    if p == t[i]:
+        accuracy_cnt += 1
+
+print("Accuracy: " + str(float(accuracy_cnt) / len(x)))
