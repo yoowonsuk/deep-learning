@@ -49,7 +49,7 @@ class Affine:
         x = x.reshape(x.shape[0], -1) # -1은 알아서 크기 조절
         self.x = x
 
-        out = np.dit(self.x, self.W) + self.b
+        out = np.dot(self.x, self.W) + self.b
 
         return out
 
