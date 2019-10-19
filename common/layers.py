@@ -46,7 +46,7 @@ class Affine:
     def forward(self, x):
         # for tensor
         self.original_x_shape = x.shape
-        x = x.reshape(x.shape[0], -1)
+        x = x.reshape(x.shape[0], -1) # -1은 알아서 크기 조절
         self.x = x
 
         out = np.dit(self.x, self.W) + self.b
