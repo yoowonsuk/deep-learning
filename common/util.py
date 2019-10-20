@@ -66,7 +66,7 @@ def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     return col
 
 
-def col2im(col, input_shape, filter_h, filter_w, stride=1, pad=0):
+def col2im(col, input_shape, filter_h, filter_w, stride=1, pad=0): # 역전파
     """(im2col과 반대) 2차원 배열을 입력받아 다수의 이미지 묶음으로 변환한다.
     
     Parameters
